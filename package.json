@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/jorgemanzo/vueParcelAlligator#readme",
   "dependencies": {
+    "babel-polyfill": "^6.26.0",
     "vue": "^2.5.17",
     "vue-hot-reload-api": "^2.3.1"
   },

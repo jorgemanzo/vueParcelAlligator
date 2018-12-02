@@ -1,4 +1,6 @@
 
+import { setInterval } from 'timers';
+import { setInterval } from 'timers';
 <template>
   <div id="borkedApp" 
 		:class="sizeClass" 
@@ -7,6 +9,7 @@
 		v-on:click="$emit('remove-me')"
 		>
     <h1>{{ msg }}</h1>
+		<p>{{ tick }}
   </div>
 </template>
 
@@ -16,7 +19,8 @@ export default {
 	props: ['msg'],
   data () {
     return {
-			sizeClass: 'defaultSize'			
+			sizeClass: 'defaultSize',
+			tick: 0		
     }
 	},
 	methods: {
@@ -25,7 +29,18 @@ export default {
 		},
 		makeDefault: function(e) {
 			this.sizeClass = 'defaultSize'
+		},
+		getData: async () => {
+			const response = await fetch('https://api.openweathermap.org/data/2.5/weather?zip=97361,us&APPID=37f76ff6a894ea771cfc426192b873cf')
+			const json = await response.json()
+			console.log(data);
 		}
+	},
+	mounted: function() {
+		setInterval(() => {
+			this.tick++
+			this.getData()
+		}, 5000)
 	}
 }
 </script>
