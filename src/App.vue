@@ -1,19 +1,19 @@
 
 <template>
   <div id="app">
-
-		<div id="addChild">
-			<input v-model="newMessage" placeholder="Text in new component">
-			<button v-on:click="makeNewComponent">Create</button>
-		</div>
-
-		<div id="appContainer">
-			<borked-app
-				v-for="child in children"
-				v-bind:key="child.id"
-				v-bind:zip="child.givenMsg"
-				v-on:remove-me="deleteChild(child.id)"
-			></borked-app>
+		<input v-model="newMessage" placeholder="Add a Zipcode">
+		<div id="appContainer" class="container">
+			<div id="addChild" class="buttonContainer">
+				<button v-on:click="makeNewComponent" class="addNewComponent">+</button>
+			</div>
+			<div class="appsContainer">
+				<borked-app
+					v-for="child in children"
+					v-bind:key="child.id"
+					v-bind:zip="child.givenMsg"
+					v-on:remove-me="deleteChild(child.id)"
+				></borked-app>
+			</div>
 		</div>
 
   </div>
@@ -63,12 +63,33 @@ export default {
 </script>
 
 <style lang="css">
-  #appContainer {
-    border: 3px solid grey;
+  .container {
+		margin: 10px;
+		padding: 10px;
+		border: 2px solid black;
 		border-radius: 10px;
+		min-height: 100px;
+		display: flex;
+		flex-wrap: wrap;
+	}
+	.buttonContainer {
+		flex: 0 50px;
+	}
+	.addNewComponent{
+		height: 100%;
+		width: 100%;
+		border: 0;
+		border-radius: 5px;
+		background-color: #458ce4;
+		color: #fff;
+		font-size: 30px;
+	}
+	.appsContainer{
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
 		justify-content: space-evenly;
-  }
+		border-radius: 5px;
+		margin-left: 10px;
+	}
 </style>
