@@ -6,21 +6,28 @@ import { setInterval } from 'timers';
 		:class="sizeClass" 
 		v-on:mouseover="makeMeBigger" 
 		v-on:mouseleave="makeDefault"
-		v-on:click="$emit('remove-me')"
 		>
-    <h1>{{ msg }}</h1>
-		<p>{{ tick }}
+    <h1>ZIP: {{ zip }}</h1>
+		<p>{{ tick }}</p>
+		<!-- <button v-on:click="fetchData">Fetch</button> -->
+		<h3>Weather status: {{ weatherStatus }}</h3>
+		<div v-on:click="$emit('remove-me')" class="buttonContainer">
+			<button class="removeComponentButton">X</button>
+		</div>
   </div>
 </template>
 
 <script>
+import k2f from 'kelvin-to-fahrenheit'
 export default {
 	name: 'borkedApp',
-	props: ['msg'],
+	props: ['zip'],
   data () {
     return {
 			sizeClass: 'defaultSize',
-			tick: 0		
+			tick: 0,
+			refresherId: 0,
+			weatherStatus: 0
     }
 	},
 	methods: {
@@ -29,18 +36,23 @@ export default {
 		},
 		makeDefault: function(e) {
 			this.sizeClass = 'defaultSize'
-		},
-		getData: async () => {
-			const response = await fetch('https://api.openweathermap.org/data/2.5/weather?zip=97361,us&APPID=37f76ff6a894ea771cfc426192b873cf')
+		}
+		,
+		fetchData: async function() {
+			const response = await fetch('https://api.openweathermap.org/data/2.5/weather?zip=' + this.zip + ',us&APPID=37f76ff6a894ea771cfc426192b873cf')
 			const json = await response.json()
-			console.log(data);
+			console.log(json)
+			this.weatherStatus = k2f(json.main.temp)
 		}
 	},
 	mounted: function() {
-		setInterval(() => {
+		this.refresherId = setInterval(() => {
+			this.fetchData()
 			this.tick++
-			this.getData()
 		}, 5000)
+	},
+	destroyed: function() {
+		clearInterval(this.refresherId)
 	}
 }
 </script>
@@ -64,5 +76,17 @@ export default {
 	}
 	.getBigger {
 		flex-grow: 2;
+	}
+	.removeComponentButton {
+		height: 100%;
+		width: 100%;
+		border: 0;
+		border-radius: 5px;
+		background-color: #e24466;
+		color: #fff;
+		font-size: 30px;
+	}
+	.buttonContainer {
+		flex: 0 50px;
 	}
 </style>

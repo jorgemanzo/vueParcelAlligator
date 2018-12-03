@@ -11,7 +11,7 @@
 			<borked-app
 				v-for="child in children"
 				v-bind:key="child.id"
-				v-bind:msg="child.givenMsg"
+				v-bind:zip="child.givenMsg"
 				v-on:remove-me="deleteChild(child.id)"
 			></borked-app>
 		</div>
@@ -29,16 +29,26 @@ export default {
   data () {
     return {
 			children: [
-				{ id:1, givenMsg: "SCREAMING!!"},
-				{ id:2, givenMsg: "SCREAMING!!"},
-				{ id:3, givenMsg: "SCREAMING!!"}
+				{ id:1, givenMsg: "97361"},
+				{ id:2, givenMsg: "97361"},
+				{ id:3, givenMsg: "97361"}
 			],
 			newMessage: ''
     }
   },
   methods: {
+		getMaxId: function(children) {
+			let max = 0
+			for(let i = 0; i < children.length; i++){
+				if(max < children[i].id){
+					max = children[i].id
+				}
+			}
+			return max
+		},
 		makeNewComponent: function() {
-			this.children.push({ 'id': this.children.length + 1, 'givenMsg': this.newMessage})
+			let newId = this.getMaxId(this.children) + 1
+			this.children.push({ 'id': newId, 'givenMsg': this.newMessage})
 		},
 		deleteChild: function(id) {
 			for(let i = 0; i < this.children.length; i++){
